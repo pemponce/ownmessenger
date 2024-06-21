@@ -21,7 +21,6 @@ public class Users {
     private String fullName;
     @Column(name = "date_of_birth")
     private String dateOfBirth;
-    private int age;
     private boolean sex;
 
 

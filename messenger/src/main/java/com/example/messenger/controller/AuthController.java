@@ -31,21 +31,27 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
             return ResponseEntity.status(400).body("Passwords don't match");
-        } else if(registerRequest.getLogin().equals(userRepository.findByLogin(registerRequest.getLogin()))) {
-            return ResponseEntity.status(400).body("This login already in use");
         }
 
         Users user = new Users();
         user.setLogin(registerRequest.getLogin());
         user.setFullName(registerRequest.getFullName());
         user.setDateOfBirth(registerRequest.getDateOfBirth());
-        user.setAge(registerRequest.getAge());
         user.setSex(registerRequest.isSex());
         user.setPassword(registerRequest.getPassword());
 
-        userService.saveUser(user);
-        return ResponseEntity.ok("Registration successful");
+        if (userRepository.findAllByLogin(registerRequest.getLogin()).stream()
+                .noneMatch(x -> registerRequest.getLogin().equals(x.getLogin()))
+        ) {
+            userService.saveUser(user);
+            userRepository.save(user);
+        } else {
+            return ResponseEntity.status(400).body("This login already in use");
+        }
+
+        return ResponseEntity.status(200).body("Registration successful");
     }
 }

@@ -10,6 +10,5 @@ public class RegisterRequest {
     private String confirmPassword;
     private String fullName;
     private String dateOfBirth;
-    private int age;
     private boolean sex;
 }
