@@ -2,7 +2,7 @@ package com.example.messenger.service;
 
 import com.example.messenger.model.MediaFile;
 import com.example.messenger.model.Message;
-import com.example.messenger.model.Users;
+import com.example.messenger.model.User;
 import com.example.messenger.repository.MessageRepository;
 import com.example.messenger.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -28,8 +28,8 @@ public class MessageService {
     }
 
     public Message sendMessage(Long senderId, Long recipientId, String content, List<MultipartFile> files) throws IOException {
-        Users sender = userRepository.findById(senderId).orElseThrow(() -> new IllegalArgumentException("Invalid sender ID"));
-        Users recipient = userRepository.findById(recipientId).orElseThrow(() -> new IllegalArgumentException("Invalid recipient ID"));
+        User sender = userRepository.findById(senderId).orElseThrow(() -> new IllegalArgumentException("Invalid sender ID"));
+        User recipient = userRepository.findById(recipientId).orElseThrow(() -> new IllegalArgumentException("Invalid recipient ID"));
 
         Message message = new Message();
         message.setSender(sender);
@@ -37,7 +37,6 @@ public class MessageService {
         message.setContent(content);
         message.setTimestamp(LocalDateTime.now());
 
-        // Сохраняем сообщение перед сохранением файлов, чтобы получить ID сообщения
         Message savedMessage = messageRepository.save(message);
 
         if (files != null && !files.isEmpty()) {
@@ -45,7 +44,6 @@ public class MessageService {
                 MediaFile mediaFile = saveMediaFile(savedMessage, file);
                 savedMessage.getMediaFiles().add(mediaFile);
             }
-            // Сохраняем сообщение снова, чтобы обновить список файлов
             savedMessage = messageRepository.save(savedMessage);
         }
 

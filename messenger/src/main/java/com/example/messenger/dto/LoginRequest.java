@@ -1,4 +1,4 @@
-package com.example.messenger.request;
+package com.example.messenger.dto;
 
 import lombok.Data;
 

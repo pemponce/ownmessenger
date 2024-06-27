@@ -1,10 +1,17 @@
 package com.example.messenger.service;
 
-import com.example.messenger.model.Users;
+import com.example.messenger.model.Role;
+import com.example.messenger.model.User;
 import com.example.messenger.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.awt.*;
 
 @Service
 public class UserService {
@@ -14,16 +21,38 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public boolean authenticate(String login, String password) {
-        Users user = userRepository.findByLogin(login);
-        if(user != null) {
+        User user = userRepository.findByLogin(login);
+        if (user != null) {
             return passwordEncoder.matches(password, user.getPassword());
         }
 
         return false;
     }
 
-    public void saveUser(Users user) {
+    public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
+
+    public User getByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
+    public UserDetailsService userDetailsService() {
+        return this::getByLogin;
+    }
+
+    public User getCurrentUser() {
+        // Получение имени пользователя из контекста Spring Security
+        var login = SecurityContextHolder.getContext().getAuthentication().getName();
+        return getByLogin(login);
+    }
+
+    @Deprecated
+    public void getAdmin() {
+        var user = getCurrentUser();
+        user.setRole(Role.ADMIN);
+        userRepository.save(user);
+    }
+
 }

@@ -1,14 +1,15 @@
-package com.example.messenger.request;
+package com.example.messenger.dto;
 
-import jakarta.persistence.Column;
+import com.example.messenger.model.Role;
 import lombok.Data;
 
 @Data
-public class RegisterRequest {
+public class UserDto {
     private String login;
     private String password;
     private String confirmPassword;
     private String fullName;
     private String dateOfBirth;
     private boolean sex;
+    private Role role;
 }

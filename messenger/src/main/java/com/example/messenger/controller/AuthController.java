@@ -1,9 +1,12 @@
 package com.example.messenger.controller;
 
-import com.example.messenger.model.Users;
+import com.example.messenger.dto.JwtAuthenticationResponse;
+import com.example.messenger.dto.UserDto;
+import com.example.messenger.model.Role;
+import com.example.messenger.model.User;
 import com.example.messenger.repository.UserRepository;
-import com.example.messenger.request.LoginRequest;
-import com.example.messenger.request.RegisterRequest;
+import com.example.messenger.dto.LoginRequest;
+import com.example.messenger.service.JwtService;
 import com.example.messenger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,40 +21,54 @@ public class AuthController {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    public AuthController(UserService userService, UserRepository userRepository, JwtService jwtService) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+    }
+
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public JwtAuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
         boolean isAuthenticated = userService.authenticate(loginRequest.getLogin(), loginRequest.getPassword());
         if (isAuthenticated) {
-            return ResponseEntity.ok("Login successful");
+            var user = userService
+                    .userDetailsService().loadUserByUsername(loginRequest.getLogin());
+
+            var jwt = jwtService.generateToken(user);
+            return new JwtAuthenticationResponse(jwt);
         } else {
-            return ResponseEntity.status(401).body("Invalid Login or Password");
+            throw new IllegalStateException("Incorrect password or login");
         }
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
-
-        if (!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
-            return ResponseEntity.status(400).body("Passwords don't match");
+    public JwtAuthenticationResponse register(@RequestBody UserDto newUser) {
+        if (!newUser.getPassword().equals(newUser.getConfirmPassword())) {
+            throw new IllegalArgumentException("Passwords do not match");
         }
 
-        Users user = new Users();
-        user.setLogin(registerRequest.getLogin());
-        user.setFullName(registerRequest.getFullName());
-        user.setDateOfBirth(registerRequest.getDateOfBirth());
-        user.setSex(registerRequest.isSex());
-        user.setPassword(registerRequest.getPassword());
-
-        if (userRepository.findAllByLogin(registerRequest.getLogin()).stream()
-                .noneMatch(x -> registerRequest.getLogin().equals(x.getLogin()))
-        ) {
-            userService.saveUser(user);
-            userRepository.save(user);
-        } else {
-            return ResponseEntity.status(400).body("This login already in use");
+        if (userRepository.existsByLogin(newUser.getLogin())) {
+            throw new IllegalStateException("User with this login already exists");
         }
 
-        return ResponseEntity.status(200).body("Registration successful");
+        User user = User.builder()
+                .login(newUser.getLogin())
+                .fullName(newUser.getFullName())
+                .password(newUser.getPassword())
+                .dateOfBirth(newUser.getDateOfBirth())
+                .sex(newUser.isSex())
+                .role(Role.USER)
+                .build();
+
+        userService.saveUser(user);
+        String jwt = jwtService.generateToken(user);
+
+        return new JwtAuthenticationResponse(jwt);
     }
+
 }

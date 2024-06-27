@@ -24,11 +24,11 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "sender_id", nullable = false)
-    private Users sender;
+    private User sender;
 
     @ManyToOne
     @JoinColumn(name = "recipient_id", nullable = false)
-    private Users recipient;
+    private User recipient;
 
     private String content;
     private LocalDateTime timestamp;

@@ -26,7 +26,7 @@ public class Chat {
             joinColumns = @JoinColumn(name = "chat_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<Users> users;
+    private List<User> users;
 
     @OneToMany
     private List<Message> messages;
