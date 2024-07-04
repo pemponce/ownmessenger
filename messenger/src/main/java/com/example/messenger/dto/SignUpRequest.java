@@ -4,7 +4,7 @@ import com.example.messenger.model.Role;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class SignUpRequest {
     private String login;
     private String password;
     private String confirmPassword;

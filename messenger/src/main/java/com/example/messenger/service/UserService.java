@@ -3,6 +3,7 @@ package com.example.messenger.service;
 import com.example.messenger.model.Role;
 import com.example.messenger.model.User;
 import com.example.messenger.repository.UserRepository;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,14 +12,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
-
 @Service
+
 public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
 
     public boolean authenticate(String login, String password) {
         User user = userRepository.findByLogin(login);
@@ -28,6 +33,16 @@ public class UserService {
 
         return false;
     }
+
+    public User create(User user) {
+        if (userRepository.existsByLogin(user.getUsername())) {
+            // Заменить на свои исключения
+            throw new RuntimeException("Пользователь с таким именем уже существует");
+        }
+
+        return save(user);
+    }
+
 
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
