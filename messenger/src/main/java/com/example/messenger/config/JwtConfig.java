@@ -1,15 +1,19 @@
 package com.example.messenger.config;
 
-import com.example.messenger.dto.JwtAuthenticationFilter;
-import com.example.messenger.service.JwtService;
-import com.example.messenger.service.UserService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Base64;
 
 @Configuration
 public class JwtConfig {
 
-    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtService jwtService, UserService userService) {
-        return new JwtAuthenticationFilter(jwtService, userService);
+    public String jwtDecode(String jwt) {
+        String[] chunks = jwt.split("\\.");
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+
+        String header = new String(decoder.decode(chunks[0]));
+        String payload = new String(decoder.decode(chunks[1]));
+
+        return payload;
     }
 }

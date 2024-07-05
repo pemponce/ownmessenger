@@ -31,6 +31,7 @@ public class AuthenticationService {
         var user = User.builder()
                 .login(request.getLogin())
                 .fullName(request.getFullName())
+                .dateOfBirth(request.getDateOfBirth())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .sex(request.isSex())
                 .role(Role.USER)

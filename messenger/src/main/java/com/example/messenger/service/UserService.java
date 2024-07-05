@@ -1,5 +1,6 @@
 package com.example.messenger.service;
 
+import com.example.messenger.model.AccountDetails;
 import com.example.messenger.model.Role;
 import com.example.messenger.model.User;
 import com.example.messenger.repository.UserRepository;
@@ -24,6 +25,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public AccountDetails accountInfo(User user) {
+
+        return AccountDetails.builder()
+                .login(user.getLogin())
+                .fullName(user.getFullName())
+                .sex(user.isSex())
+                .dateOfBirth(user.getDateOfBirth())
+                .build();
+    }
 
     public boolean authenticate(String login, String password) {
         User user = userRepository.findByLogin(login);
