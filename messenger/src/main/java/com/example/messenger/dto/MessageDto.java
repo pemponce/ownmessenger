@@ -1,6 +1,5 @@
 package com.example.messenger.dto;
 
-import com.example.messenger.model.MediaFile;
 import com.example.messenger.model.User;
 import lombok.Data;
 
@@ -18,5 +17,4 @@ public class MessageDto {
     private LocalDateTime timestamp;
     private Long chatId;
 
-    private List<MediaFile> mediaFiles = new ArrayList<>();
 }

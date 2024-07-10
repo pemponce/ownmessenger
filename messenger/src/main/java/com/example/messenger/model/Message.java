@@ -35,7 +35,4 @@ public class Message {
     @Column(name = "chat_id")
     private Long chatId;
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL)
-    private List<MediaFile> mediaFiles = new ArrayList<>();
-
 }

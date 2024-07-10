@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 
 public class UserService {
@@ -46,21 +48,21 @@ public class UserService {
 
     public User create(User user) {
         if (userRepository.existsByLogin(user.getUsername())) {
-            // Заменить на свои исключения
             throw new RuntimeException("Пользователь с таким именем уже существует");
         }
-
         return save(user);
-    }
-
-
-    public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
     }
 
     public User getByLogin(String login) {
         return userRepository.findByLogin(login);
+    }
+
+    public List<User> findUsernameByFIO(String fio) {
+        return userRepository.findUsernameByFIO("%" + fio + "%");
+    }
+
+    public List<User>  findUsernameByLogin(String login) {
+        return userRepository.findUsernameByLogin(login);
     }
 
     public UserDetailsService userDetailsService() {
@@ -68,7 +70,6 @@ public class UserService {
     }
 
     public User getCurrentUser() {
-        // Получение имени пользователя из контекста Spring Security
         var login = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByLogin(login);
     }
