@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 @CrossOrigin
 public class SearchController {
     private final UserService userService;
 
-    @GetMapping("search")
-    public User searchUser(@RequestBody String text) {
-        if (userService.findUsernameByFIO(text).isEmpty()) {
-            List<User> users = userService.findUsernameByLogin(text);
-            return users.get(0);
+    @GetMapping("/search")
+    public List<User> searchUser(@RequestParam String text) {
+        if (text == null || text.isBlank()) {
+            System.out.println("sex 1");
+            return userService.getAllUsers();
         } else {
-            List<User> users = userService.findUsernameByFIO(text);
-            return users.get(0);
+            System.out.println("sex 2");
+            return userService.findByFullNameContainingOrLoginContaining(text);
         }
     }
 }

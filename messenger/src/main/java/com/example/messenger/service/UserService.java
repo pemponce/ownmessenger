@@ -2,6 +2,7 @@ package com.example.messenger.service;
 
 import com.example.messenger.model.AccountDetails;
 import com.example.messenger.model.Role;
+import com.example.messenger.model.SearchAccountDetails;
 import com.example.messenger.model.User;
 import com.example.messenger.repository.UserRepository;
 import lombok.Builder;
@@ -37,6 +38,14 @@ public class UserService {
                 .build();
     }
 
+    public SearchAccountDetails searchInfo(User user) {
+        return SearchAccountDetails.builder()
+                .fullName(user.getFullName())
+                .login(user.getLogin())
+                .sex(user.isSex())
+                .build();
+    }
+
     public boolean authenticate(String login, String password) {
         User user = userRepository.findByLogin(login);
         if (user != null) {
@@ -57,12 +66,14 @@ public class UserService {
         return userRepository.findByLogin(login);
     }
 
-    public List<User> findUsernameByFIO(String fio) {
-        return userRepository.findUsernameByFIO("%" + fio + "%");
+    public User getByFio(String fio) {
+        return userRepository.findByFullName(fio);
     }
-
-    public List<User>  findUsernameByLogin(String login) {
-        return userRepository.findUsernameByLogin(login);
+    public List<User> getAllUsers() {
+        return userRepository.getAllUsers();
+    }
+    public List<User> findByFullNameContainingOrLoginContaining(String text) {
+        return userRepository.findByFullNameContainingOrLoginContaining(text);
     }
 
     public UserDetailsService userDetailsService() {

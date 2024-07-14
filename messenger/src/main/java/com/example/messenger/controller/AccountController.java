@@ -29,7 +29,7 @@ public class AccountController {
     @GetMapping("/profile")
     @Operation(summary = "Доступен только авторизованным пользователям")
     public AccountDetails profile(@RequestHeader("Authorization") String authorizationHeader) throws JsonProcessingException {
-        String jwt = authorizationHeader.substring(7); // Remove "Bearer " prefix
+        String jwt = authorizationHeader.substring(7);
         String payload = jwtConfig.jwtDecode(jwt);
 
         ObjectMapper objectMapper = new ObjectMapper();
