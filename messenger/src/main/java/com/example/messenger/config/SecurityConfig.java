@@ -2,6 +2,7 @@ package com.example.messenger.config;
 
 import com.example.messenger.dto.JwtAuthenticationFilter;
 import com.example.messenger.service.UserService;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -65,5 +66,20 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    public static void loadEnv() {
+        Dotenv dotenv = Dotenv.configure().load();
+        String springDataSourceUrl = dotenv.get("DATA_SOURCE");
+        String springDatabaseName = dotenv.get("DATABASE_NAME");
+        String springDataPassword = dotenv.get("DATA_PASSWORD");
+        String springDatabaseUserName = dotenv.get("ROOT_NAME");
+        String springTokenKey = dotenv.get("SIGN_IN_KEY");
+
+        System.setProperty("DATA_SOURCE", springDataSourceUrl);
+        System.setProperty("DATABASE_NAME", springDatabaseName);
+        System.setProperty("DATA_PASSWORD", springDataPassword);
+        System.setProperty("ROOT_NAME", springDatabaseUserName);
+        System.setProperty("SIGN_IN_KEY", springTokenKey);
     }
 }
