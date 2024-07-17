@@ -10,9 +10,8 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findAllByLogin(String login);
     User findByLogin(String login);
-    User findByFullName(String fullName);
+    User findUserById(Long id);
     @Query("SELECT users.login FROM User users")
     List<User> getAllUsers();
     @Query("SELECT users FROM User users WHERE users.fullName LIKE %:text% OR users.login LIKE %:text%")

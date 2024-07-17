@@ -11,9 +11,6 @@ public class JwtConfig {
         String[] chunks = jwt.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
 
-        String header = new String(decoder.decode(chunks[0]));
-        String payload = new String(decoder.decode(chunks[1]));
-
-        return payload;
+        return new String(decoder.decode(chunks[1]));
     }
 }
