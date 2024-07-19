@@ -66,7 +66,8 @@ public class UserService {
                 .build();
     }
 
-    public List<User> findFriendsByUserId(Long userId) {
+    public List<User> findFriendsByUserId() {
+        Long userId = getCurrentUser().getId();
         return friendsRepository.findFriendsByUserId(userId);
     }
 

@@ -2,7 +2,6 @@ package com.example.messenger.controller;
 
 import com.example.messenger.dto.FriendsDto;
 import com.example.messenger.model.AccountDetails;
-import com.example.messenger.model.Friends;
 import com.example.messenger.model.User;
 import com.example.messenger.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +36,9 @@ public class SearchController {
     }
 
     @GetMapping("/friends")
-    public List<AccountDetails> myFriends(@RequestHeader("Authorization") @RequestParam Long userId) {
+    public List<AccountDetails> myFriends() {
 
-        List<User> users = userService.findFriendsByUserId(userId);
+        List<User> users = userService.findFriendsByUserId();
         List<AccountDetails> friends = new ArrayList<>();
 
         for (User user : users) {

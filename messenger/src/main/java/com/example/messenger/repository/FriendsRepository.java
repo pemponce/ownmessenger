@@ -1,7 +1,5 @@
 package com.example.messenger.repository;
 
-import com.example.messenger.dto.FriendsDto;
-import com.example.messenger.model.AccountDetails;
 import com.example.messenger.model.Friends;
 import com.example.messenger.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
