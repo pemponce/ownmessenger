@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-
 public class UserService {
     @Autowired
     private UserRepository userRepository;
@@ -67,6 +66,10 @@ public class UserService {
                 .build();
     }
 
+    public List<User> findFriendsByUserId(Long userId) {
+        return friendsRepository.findFriendsByUserId(userId);
+    }
+
     public boolean authenticate(String login, String password) {
         User user = userRepository.findByLogin(login);
         if (user != null) {
@@ -76,11 +79,11 @@ public class UserService {
         return false;
     }
 
-    public User create(User user) {
+    public void create(User user) {
         if (userRepository.existsByLogin(user.getUsername())) {
             throw new RuntimeException("Пользователь с таким именем уже существует");
         }
-        return save(user);
+        save(user);
     }
 
     public User getByLogin(String login) {

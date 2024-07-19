@@ -1,11 +1,14 @@
 package com.example.messenger.controller;
 
 import com.example.messenger.dto.FriendsDto;
+import com.example.messenger.model.AccountDetails;
+import com.example.messenger.model.Friends;
 import com.example.messenger.model.User;
 import com.example.messenger.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,24 +21,31 @@ public class SearchController {
     @GetMapping("/search")
     public List<User> searchUser(@RequestParam String text) {
         if (text == null || text.isBlank()) {
-            System.out.println("sex 1");
             return userService.getAllUsers();
         } else {
-            System.out.println("sex 2");
             return userService.findByFullNameContainingOrLoginContaining(text);
         }
     }
 
     @PostMapping("/add_friend")
     public FriendsDto addUser(@RequestHeader("Authorization") @RequestParam String friendUrlId) {
-        System.out.println("sex 1");
 
         Long id = Long.parseLong(friendUrlId);
-        System.out.println("sex 2");
-
         User friend = userService.findUserById(id);
-        System.out.println("sex 3");
 
         return userService.addFriend(friend);
+    }
+
+    @GetMapping("/friends")
+    public List<AccountDetails> myFriends(@RequestHeader("Authorization") @RequestParam Long userId) {
+
+        List<User> users = userService.findFriendsByUserId(userId);
+        List<AccountDetails> friends = new ArrayList<>();
+
+        for (User user : users) {
+            friends.add(userService.accountInfo(user));
+        }
+
+        return friends;
     }
 }
