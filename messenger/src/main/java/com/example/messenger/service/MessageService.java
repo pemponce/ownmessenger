@@ -11,26 +11,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Service
-public class MessageService {
-    private final MessageRepository messageRepository;
-    private final UserRepository userRepository;
+public interface MessageService {
 
-    public MessageService(MessageRepository messageRepository, UserRepository userRepository) {
-        this.messageRepository = messageRepository;
-        this.userRepository = userRepository;
-    }
-
-    public Message sendMessage(Long senderId, Long recipientId, String content, List<MultipartFile> files) throws IOException {
-        User sender = userRepository.findById(senderId).orElseThrow(() -> new IllegalArgumentException("Invalid sender ID"));
-        User recipient = userRepository.findById(recipientId).orElseThrow(() -> new IllegalArgumentException("Invalid recipient ID"));
-
-        Message message = new Message();
-        message.setSender(sender);
-        message.setRecipient(recipient);
-        message.setContent(content);
-        message.setTimestamp(LocalDateTime.now());
-
-        return messageRepository.save(message);
-    }
+    Message sendMessage(Long senderId, Long recipientId, String content, List<MultipartFile> files) throws IOException;
 }

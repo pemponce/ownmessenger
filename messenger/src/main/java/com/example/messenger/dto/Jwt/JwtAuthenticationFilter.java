@@ -1,4 +1,4 @@
-package com.example.messenger.dto;
+package com.example.messenger.dto.Jwt;
 
 import com.example.messenger.service.JwtService;
 import com.example.messenger.service.UserService;

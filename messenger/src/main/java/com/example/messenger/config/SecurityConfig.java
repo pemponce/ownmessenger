@@ -1,6 +1,6 @@
 package com.example.messenger.config;
 
-import com.example.messenger.dto.JwtAuthenticationFilter;
+import com.example.messenger.dto.Jwt.JwtAuthenticationFilter;
 import com.example.messenger.service.UserService;
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.RequiredArgsConstructor;

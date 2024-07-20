@@ -1,4 +1,4 @@
-package com.example.messenger.dto;
+package com.example.messenger.dto.Jwt;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

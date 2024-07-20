@@ -1,13 +1,10 @@
 package com.example.messenger.controller;
 
-import com.example.messenger.dto.JwtAuthenticationResponse;
+import com.example.messenger.dto.Jwt.JwtAuthenticationResponse;
 import com.example.messenger.dto.SignUpRequest;
-import com.example.messenger.model.Role;
-import com.example.messenger.model.User;
 import com.example.messenger.repository.UserRepository;
 import com.example.messenger.dto.SignInRequest;
 import com.example.messenger.service.AuthenticationService;
-import com.example.messenger.service.JwtService;
 import com.example.messenger.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
