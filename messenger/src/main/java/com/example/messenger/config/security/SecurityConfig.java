@@ -1,4 +1,4 @@
-package com.example.messenger.config;
+package com.example.messenger.config.security;
 
 import com.example.messenger.dto.Jwt.JwtAuthenticationFilter;
 import com.example.messenger.service.UserService;

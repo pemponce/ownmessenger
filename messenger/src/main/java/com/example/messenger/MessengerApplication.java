@@ -1,8 +1,6 @@
 package com.example.messenger;
 
-import com.example.messenger.config.SecurityConfig;
-import com.example.messenger.service.JwtService;
-import io.jsonwebtoken.security.Keys;
+import com.example.messenger.config.security.SecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

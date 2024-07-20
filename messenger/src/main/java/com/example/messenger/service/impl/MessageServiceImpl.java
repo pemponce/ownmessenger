@@ -19,7 +19,8 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
 
-    public Message sendMessage(Long senderId, Long recipientId, String content, List<MultipartFile> files) throws IOException {
+    public Message sendMessage(Long senderId, Long recipientId, String content, List<MultipartFile> files) {
+
         User sender = userRepository.findById(senderId).orElseThrow(() -> new IllegalArgumentException("Invalid sender ID"));
         User recipient = userRepository.findById(recipientId).orElseThrow(() -> new IllegalArgumentException("Invalid recipient ID"));
 

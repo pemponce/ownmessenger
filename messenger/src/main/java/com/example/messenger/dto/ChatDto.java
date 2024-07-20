@@ -1,5 +1,6 @@
 package com.example.messenger.dto;
 
+import com.example.messenger.model.Chat;
 import com.example.messenger.model.Message;
 import com.example.messenger.model.User;
 import lombok.AllArgsConstructor;

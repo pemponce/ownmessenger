@@ -1,4 +1,4 @@
-package com.example.messenger.config;
+package com.example.messenger.config.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
