@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public Chat showChat(Long id) {
+    public Chat showChat(Long  id) {
         return chatRepository.getChatById(id);
     }
 

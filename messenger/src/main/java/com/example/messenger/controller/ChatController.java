@@ -17,6 +17,7 @@ import java.util.List;
 public class ChatController {
     private final ChatService chatService;
     private final UserService userService;
+    private final MessageService messageService;
 
     @GetMapping("")
     public List<Chat> chatList() {
@@ -28,6 +29,18 @@ public class ChatController {
         return chatService.showChat(chatId);
     }
 
+    @PostMapping("/{chatId}/send_message")
+    public Message sendMessage(
+            @PathVariable Long chatId,
+            @RequestParam Long recipientId,
+            @RequestBody String content) {
+        return messageService.sendMessage(
+                userService.getCurrentUser().getId(),
+                recipientId,
+                chatId,
+                content);
+    }
+
     @PostMapping("/create")
     public Chat createChat(@RequestParam Long friendId) {
         return chatService.createChat(friendId);
@@ -37,5 +50,4 @@ public class ChatController {
     public void deleteChat(@PathVariable Long chatId) {
         chatService.deleteChat(chatId);
     }
-
 }
