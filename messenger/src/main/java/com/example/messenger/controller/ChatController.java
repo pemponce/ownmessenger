@@ -1,5 +1,6 @@
 package com.example.messenger.controller;
 
+import com.example.messenger.dto.MessageDto;
 import com.example.messenger.model.Chat;
 import com.example.messenger.model.Message;
 import com.example.messenger.service.ChatService;
@@ -25,7 +26,7 @@ public class ChatController {
     }
 
     @GetMapping("/{chatId}")
-    public List<String> chatPage(@PathVariable Long chatId) {
+    public List<Message> chatPage(@PathVariable Long chatId) {
         return messageService.showChat(chatId);
     }
 

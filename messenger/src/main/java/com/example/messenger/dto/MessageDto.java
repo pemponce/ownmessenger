@@ -9,9 +9,9 @@ import java.util.List;
 
 @Data
 public class MessageDto {
-    private User sender;
+    private String sender;
 
-    private User recipient;
+    private String recipient;
 
     private String content;
     private LocalDateTime timestamp;

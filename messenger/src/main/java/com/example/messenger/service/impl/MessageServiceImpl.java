@@ -1,5 +1,6 @@
 package com.example.messenger.service.impl;
 
+import com.example.messenger.dto.MessageDto;
 import com.example.messenger.model.Chat;
 import com.example.messenger.model.Message;
 import com.example.messenger.model.User;
@@ -41,9 +42,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<String> showChat(Long id) {
-        List<String> messages = new ArrayList<>();
-        messages.add(messageRepository.getAllByChatId(id).toString());
-        return messages;
+    public List<Message> showChat(Long id) {
+
+
+        return messageRepository.getAllByChatId(id);
     }
 }
