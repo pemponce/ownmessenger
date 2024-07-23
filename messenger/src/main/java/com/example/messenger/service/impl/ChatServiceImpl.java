@@ -1,6 +1,5 @@
 package com.example.messenger.service.impl;
 
-import com.example.messenger.dto.ChatDto;
 import com.example.messenger.model.Chat;
 import com.example.messenger.model.User;
 import com.example.messenger.repository.ChatRepository;
@@ -23,11 +22,6 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<Chat> getAllChats(Long userId) {
         return chatRepository.getAllByUserId(userId);
-    }
-
-    @Override
-    public Chat showChat(Long  id) {
-        return chatRepository.getChatById(id);
     }
 
     public Chat createChat(Long friendId) {

@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +38,12 @@ public class MessageServiceImpl implements MessageService {
         message.setTimestamp(LocalDateTime.now());
 
         return messageRepository.save(message);
+    }
+
+    @Override
+    public List<String> showChat(Long id) {
+        List<String> messages = new ArrayList<>();
+        messages.add(messageRepository.getAllByChatId(id).toString());
+        return messages;
     }
 }

@@ -25,8 +25,8 @@ public class ChatController {
     }
 
     @GetMapping("/{chatId}")
-    public Chat chatPage(@PathVariable Long chatId) {
-        return chatService.showChat(chatId);
+    public List<String> chatPage(@PathVariable Long chatId) {
+        return messageService.showChat(chatId);
     }
 
     @PostMapping("/{chatId}/send_message")
