@@ -1,5 +1,6 @@
 package com.example.messenger.controller;
 
+import com.example.messenger.dto.MessageDto;
 import com.example.messenger.model.Chat;
 import com.example.messenger.model.Message;
 import com.example.messenger.service.ChatService;
@@ -30,7 +31,7 @@ public class ChatController {
     }
 
     @PostMapping("/{chatId}/send_message")
-    public Message sendMessage(
+    public MessageDto sendMessage(
             @PathVariable Long chatId,
             @RequestParam Long recipientId,
             @RequestBody String content) {

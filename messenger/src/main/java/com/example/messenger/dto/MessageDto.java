@@ -1,18 +1,21 @@
 package com.example.messenger.dto;
 
-import com.example.messenger.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class MessageDto {
     private String sender;
     private String recipient;
+    private Long chat;
     private String content;
     private LocalDateTime timestamp;
-    private Long chatId;
 
 }

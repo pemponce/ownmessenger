@@ -1,5 +1,7 @@
 package com.example.messenger.service.impl;
 
+import com.example.messenger.dto.MessageDto;
+import com.example.messenger.mapper.MessageMapper;
 import com.example.messenger.model.Chat;
 import com.example.messenger.model.Message;
 import com.example.messenger.model.User;
@@ -11,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,9 +21,10 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
     private final ChatRepository chatRepository;
+    private final MessageMapper messageMapper;
 
     @Override
-    public Message sendMessage(Long senderId, Long recipientId, Long chatId, String content) {
+    public MessageDto sendMessage(Long senderId, Long recipientId, Long chatId, String content) {
         User sender = userRepository.findById(senderId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid sender ID"));
         User recipient = userRepository.findById(recipientId)
@@ -30,19 +32,21 @@ public class MessageServiceImpl implements MessageService {
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid chat ID"));
 
-        Message message = new Message();
-        message.setSender(sender);
-        message.setRecipient(recipient);
-        message.setChat(chat);
-        message.setContent(content);
-        message.setTimestamp(LocalDateTime.now());
+        Message message = Message.builder()
+                .sender(sender)
+                .recipient(recipient)
+                .content(content)
+                .timestamp(LocalDateTime.now())
+                .chat(chat)
+                .build();
 
-        return messageRepository.save(message);
+        messageRepository.save(message);
+
+        return messageMapper.toDto(message);
     }
 
     @Override
     public List<Message> showChat(Long id) {
-
 
         return messageRepository.getAllByChatId(id);
     }
