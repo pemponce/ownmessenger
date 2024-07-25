@@ -9,6 +9,7 @@ import com.example.messenger.repository.ChatRepository;
 import com.example.messenger.repository.MessageRepository;
 import com.example.messenger.repository.UserRepository;
 import com.example.messenger.service.MessageService;
+import com.example.messenger.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final ChatRepository chatRepository;
     private final MessageMapper messageMapper;
 
@@ -28,9 +30,13 @@ public class MessageServiceImpl implements MessageService {
         User sender = userRepository.findById(senderId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid sender ID"));
         User recipient = userRepository.findById(recipientId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid sender ID"));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid recipient ID"));
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid chat ID"));
+
+        if (!chat.getUsers().contains(sender) || !chat.getUsers().contains(recipient)) {
+            throw new IllegalArgumentException("User not a member of this chat");
+        }
 
         Message message = Message.builder()
                 .sender(sender)
@@ -46,8 +52,15 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> showChat(Long id) {
+    public List<Message> showChat(Long chatId) {
+        User currentUser = userService.getCurrentUser();
+        Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid chat ID"));
 
-        return messageRepository.getAllByChatId(id);
+        if (!chat.getUsers().contains(currentUser)) {
+            throw new IllegalArgumentException("You are not allowed in this chat");
+        }
+
+        return messageRepository.getAllByChatId(chatId);
     }
 }
