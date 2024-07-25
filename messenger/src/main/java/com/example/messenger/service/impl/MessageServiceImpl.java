@@ -1,6 +1,5 @@
 package com.example.messenger.service.impl;
 
-import com.example.messenger.dto.MessageDto;
 import com.example.messenger.model.Chat;
 import com.example.messenger.model.Message;
 import com.example.messenger.model.User;
